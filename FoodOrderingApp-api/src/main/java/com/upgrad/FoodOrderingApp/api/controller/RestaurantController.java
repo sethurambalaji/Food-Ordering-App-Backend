@@ -2,6 +2,7 @@ package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
+import com.upgrad.FoodOrderingApp.service.common.UtilityProvider;
 import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
@@ -269,7 +270,8 @@ public class RestaurantController {
                 throws RestaurantNotFoundException,
                        AuthorizationFailedException,
                        InvalidRatingException {
-        final RestaurantEntity restaurantEntity = restaurantService.editRestaurantEntity(restaurantUuid,customerRating,authorization);
+        String accessToken = UtilityProvider.getAccessTokenFromAuthorization(authorization);
+        final RestaurantEntity restaurantEntity = restaurantService.editRestaurantEntity(restaurantUuid,customerRating,accessToken);
 
         RestaurantUpdatedResponse restaurantUpdatedResponse = new RestaurantUpdatedResponse()
                 .id(UUID.fromString(restaurantEntity.getUuid())).status("RESTAURANT RATING UPDATED SUCCESSFULLY");

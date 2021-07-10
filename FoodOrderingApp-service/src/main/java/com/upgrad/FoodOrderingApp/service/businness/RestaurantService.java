@@ -81,8 +81,8 @@ public class RestaurantService {
                                                  String accessToken)
             throws AuthorizationFailedException, InvalidRatingException, RestaurantNotFoundException {
 
-//        CustomerService customerService = new CustomerService();
-//        CustomerEntity customerEntity = customerService.getCustomer(accessToken);
+        CustomerService customerService = new CustomerService();
+        CustomerEntity customerEntity = customerService.getCustomer(accessToken);
 
         RestaurantEntity restaurantEntity = this.getRestaurantByUuid(restaurantUuid);
 
