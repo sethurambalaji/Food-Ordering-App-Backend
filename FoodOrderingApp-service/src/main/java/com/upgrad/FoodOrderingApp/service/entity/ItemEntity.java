@@ -1,17 +1,48 @@
 package com.upgrad.FoodOrderingApp.service.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
+
+@NamedNativeQueries({
+        // Using native query as named queries do not support LIMIT in nested statements.
+        @NamedNativeQuery(
+                name = "topFivePopularItemsByRestaurant",
+                query =
+                        "select * from item where id in "
+                                + "(select item_id from order_item where order_id in "
+                                + "(select id from orders where restaurant_id = ? ) "
+                                + "group by order_item.item_id "
+                                + "order by (count(order_item.order_id)) "
+                                + "desc LIMIT 5)",
+                resultClass = ItemEntity.class)
+})
+@NamedQueries({
+        @NamedQuery(name = "itemByUUID", query = "select i from ItemEntity i where i.uuid=:itemUUID"),
+        @NamedQuery(
+                name = "getAllItemsInCategoryInRestaurant",
+                query =
+                        "select i from ItemEntity i  where i.id in (select ri.itemId from RestaurantItemEntity ri "
+                                + "inner join CategoryItemEntity ci on ci.itemId = ri.itemId "
+                                + "where ri.restaurantId = (select r.id from RestaurantEntity r where "
+                                + "r.uuid=:restaurantUuid) and ci.categoryId = "
+                                + "(select c.id from CategoryEntity c where c.uuid=:categoryUuid ) )"
+                                + "order by i.itemName asc")
+})
+
 
 @Entity
 @Table(name="item")
-public class ItemEntity {
+public class ItemEntity implements Serializable {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
     @Column(name="uuid")
     private String uuid;
 

@@ -13,13 +13,12 @@ public class CategoryItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany
-    @Column(name = "item_id")
-    private List<ItemEntity> itemEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private CategoryEntity categoryEntity;
+    @Column(name = "item_id")
+    private Integer itemId;
+
+    @Column(name = "category_id")
+    private Integer categoryId;
 
     public Integer getId() {
         return id;
@@ -29,20 +28,20 @@ public class CategoryItemEntity {
         this.id = id;
     }
 
-    public List<ItemEntity> getItemEntity() {
-        return itemEntity;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setItemEntity(List<ItemEntity> itemEntity) {
-        this.itemEntity = itemEntity;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
-    public CategoryEntity getCategoryEntity() {
-        return categoryEntity;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategoryEntity(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
     @Override
@@ -50,20 +49,20 @@ public class CategoryItemEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CategoryItemEntity that = (CategoryItemEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(itemEntity, that.itemEntity) && Objects.equals(categoryEntity, that.categoryEntity);
+        return Objects.equals(id, that.id) && Objects.equals(itemId, that.itemId) && Objects.equals(categoryId, that.categoryId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, itemEntity, categoryEntity);
+        return Objects.hash(id, itemId, categoryId);
     }
 
     @Override
     public String toString() {
         return "CategoryItemEntity{" +
                 "id=" + id +
-                ", itemEntity=" + itemEntity +
-                ", categoryEntity=" + categoryEntity +
+                ", itemId=" + itemId +
+                ", categoryId=" + categoryId +
                 '}';
     }
 }
